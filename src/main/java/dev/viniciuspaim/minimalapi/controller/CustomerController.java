@@ -1,0 +1,36 @@
+package dev.viniciuspaim.minimalapi.controller;
+
+import dev.viniciuspaim.minimalapi.dto.CustomerRequest;
+import dev.viniciuspaim.minimalapi.service.CustomerService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RequestMapping("/customers")
+@RestController
+public class CustomerController {
+    final CustomerService customerService;
+
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createCustomer(@RequestBody CustomerRequest customer) {
+        return ResponseEntity.ok(customerService.createCustomer(customer));
+    }
+
+    @GetMapping("/{customerId}")
+    public ResponseEntity<?> getCustomer(@PathVariable Long customerId) {
+        return ResponseEntity.ok(customerService.findById(customerId));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllCustomers() {
+        return ResponseEntity.ok(customerService.findAll());
+    }
+
+    @PutMapping("/{customerId}/delete")
+    public ResponseEntity<?> deleteCustomer(@PathVariable Long customerId) {
+        return customerService.deleteById(customerId);
+    }
+}
