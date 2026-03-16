@@ -1,6 +1,7 @@
 package dev.viniciuspaim.minimalapi.service;
 
 import dev.viniciuspaim.minimalapi.dto.OrderRequest;
+import dev.viniciuspaim.minimalapi.exception.InvalidOrderStatusException;
 import dev.viniciuspaim.minimalapi.exception.OrderNotFoundException;
 import dev.viniciuspaim.minimalapi.messaging.OrderEventProducer;
 import dev.viniciuspaim.minimalapi.model.Order;
@@ -34,6 +35,12 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    public void validateNotCancelled(Order order) {
+        if (order.getStatus() == StatusEnum.CANCELLED) {
+            throw new InvalidOrderStatusException("Order " + order.getOrderId() + " is already cancelled");
+        }
+    }
+
     public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Invalid Order Id: " + orderId));
@@ -45,12 +52,14 @@ public class OrderService {
 
     public Order cancelOrder(Long orderId) {
         Order order = getOrderById(orderId);
+        validateNotCancelled(order);
         order.setStatus(StatusEnum.CANCELLED);
         return orderRepository.save(order);
     }
 
     public Order confirmOrder(Long orderId) {
         Order order = getOrderById(orderId);
+        validateNotCancelled(order);
         order.setStatus(StatusEnum.CONFIRMED);
         Order saved = orderRepository.save(order);
         orderEventProducer.sendOrderConfirmedEvent(saved.getOrderId());
