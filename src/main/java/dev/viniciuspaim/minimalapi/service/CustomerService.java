@@ -4,7 +4,6 @@ import dev.viniciuspaim.minimalapi.dto.CustomerRequest;
 import dev.viniciuspaim.minimalapi.exception.CustomerNotFoundException;
 import dev.viniciuspaim.minimalapi.model.Customer;
 import dev.viniciuspaim.minimalapi.repository.CustomerRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,8 +35,7 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public ResponseEntity<?> deleteById(Long id) {
+    public void deleteById(Long id) {
         customerRepository.deleteById(id);
-        return null;
     }
 }

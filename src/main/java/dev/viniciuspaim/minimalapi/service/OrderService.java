@@ -2,6 +2,7 @@ package dev.viniciuspaim.minimalapi.service;
 
 import dev.viniciuspaim.minimalapi.dto.OrderRequest;
 import dev.viniciuspaim.minimalapi.exception.OrderNotFoundException;
+import dev.viniciuspaim.minimalapi.messaging.OrderEventProducer;
 import dev.viniciuspaim.minimalapi.model.Order;
 import dev.viniciuspaim.minimalapi.model.StatusEnum;
 import dev.viniciuspaim.minimalapi.repository.OrderRepository;
@@ -14,9 +15,12 @@ import java.util.List;
 public class OrderService {
     final
     OrderRepository orderRepository;
+    final
+    OrderEventProducer orderEventProducer;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, OrderEventProducer orderEventProducer) {
         this.orderRepository = orderRepository;
+        this.orderEventProducer = orderEventProducer;
     }
 
     public Order createOrder(OrderRequest request) {
@@ -43,5 +47,13 @@ public class OrderService {
         Order order = getOrderById(orderId);
         order.setStatus(StatusEnum.CANCELLED);
         return orderRepository.save(order);
+    }
+
+    public Order confirmOrder(Long orderId) {
+        Order order = getOrderById(orderId);
+        order.setStatus(StatusEnum.CONFIRMED);
+        Order saved = orderRepository.save(order);
+        orderEventProducer.sendOrderConfirmedEvent(saved.getOrderId());
+        return saved;
     }
 }
