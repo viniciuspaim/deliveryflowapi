@@ -1,11 +1,12 @@
 package dev.viniciuspaim.minimalapi.model;
 
-public enum StatusEnum {
+public enum OrderStatusEnum {
     CREATED,
+    PENDING,
     CONFIRMED,
-    PROCESSING,
+    PREPARING,
+    READY,
     DISPATCHED,
     DELIVERED,
-    FINISHED,
-    CANCELLED,
+    CANCELLED
 }

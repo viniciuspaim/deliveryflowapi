@@ -4,32 +4,27 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "tb_orders")
+@Table(name = "tb_products")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long orderId;
+    Long productId;
+    String name;
+    String description;
+    BigDecimal price;
+    ProductStatusEnum status;
 
     @ManyToOne
-    @JoinColumn(name = "customerId")
-    Customer customer;
-
-    OrderStatusEnum status;
-    BigDecimal totalAmount;
-    LocalDateTime createdAt;
+    @JoinColumn(name = "categoryId")
+    ProductCategory category;
 
     @ManyToOne
     @JoinColumn(name = "restaurantId")
     Restaurant restaurant;
-
-    @OneToMany(mappedBy = "order")
-    List<OrderItem> items;
 }
