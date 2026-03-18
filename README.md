@@ -58,7 +58,7 @@ CREATED → PENDING → CONFIRMED → PREPARING → READY → DISPATCHED → DEL
 ## 🔁 Messaging (RabbitMQ)
 
 When an order is confirmed (`PUT /orders/{id}/confirm`), an event is published to RabbitMQ:
-
+*I know...Its basic! Someday i'll focus on bring more functionalities and etc.*
 - **Exchange:** `exchange1` (TopicExchange)
 - **Queue:** `queue1`
 - **Routing Key:** `order.confirmed`
@@ -100,10 +100,10 @@ When an order is confirmed (`PUT /orders/{id}/confirm`), an event is published t
 | DELETE | `/customers/{id}` | Delete customer |
 
 ### Restaurants
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/restaurants` | Create restaurant |
-| GET | `/restaurants/{id}/orders` | List restaurant orders (paginated, 10 per page) |
+| Method | Endpoint | Description                                                      |
+|---|---|------------------------------------------------------------------|
+| POST | `/restaurants` | Create restaurant                                                |
+| GET | `/restaurants/{id}/orders` | List restaurant orders (paginated, 10 per page "*because i want*") |
 
 ---
 
@@ -115,8 +115,8 @@ Runs the application, PostgreSQL, and RabbitMQ together in containers.
 
 ```bash
 # Clone the repository
-git clone https://github.com/viniciuspaim/order-processing-api.git
-cd order-processing-api
+git clone https://github.com/viniciuspaim/deliveryflowapi.git
+cd deliveryflowapi
 
 # Create the .env file with your credentials
 cp .env.example .env
@@ -141,7 +141,7 @@ This is how I run the project during development. PostgreSQL and RabbitMQ run as
 # PostgreSQL
 docker run -d --name postgres -p 5432:5432 \
   -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=orders \
+  -e POSTGRES_DB=deliveryflowdb \
   postgres:16
 
 # RabbitMQ
@@ -170,7 +170,7 @@ Create a `.env` file in the project root (never commit this file):
 ```env
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
-POSTGRES_DB=orders
+POSTGRES_DB=deliveryflowdb
 RABBITMQ_USER=guest
 RABBITMQ_PASSWORD=guest
 ```
