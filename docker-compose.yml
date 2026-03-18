@@ -33,7 +33,7 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/orders
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/deliveryflowapi
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_USER}

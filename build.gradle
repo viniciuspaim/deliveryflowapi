@@ -6,7 +6,7 @@ plugins {
 
 group = 'dev.viniciuspaim'
 version = '0.0.1-SNAPSHOT'
-description = 'minimalAPI'
+description = 'deliveryFlowAPI'
 
 java {
     toolchain {
