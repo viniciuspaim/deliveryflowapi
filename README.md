@@ -77,7 +77,7 @@ When an order is confirmed (`PUT /orders/{id}/confirm`), an event is published t
 
 ---
 ## 🖧  Database Diagram
-![img_5.png](img_5.png)
+![img_5.png](readme-imgs/img_5.png)
 ## 🗄️ Database Migrations (Flyway)
 
 | Version | Description |
@@ -95,20 +95,20 @@ When an order is confirmed (`PUT /orders/{id}/confirm`), an event is published t
 ## 🌐 API Endpoints
 
 ### Orders
-![img.png](img.png)
+![img.png](readme-imgs/img.png)
 
 ### Restaurants
-![img_1.png](img_1.png)
+![img_1.png](readme-imgs/img_1.png)
 `/restaurants/{id}/orders` | paginated, 10 per page "*because i want*"😂 |
 
 ### Products
-![img_3.png](img_3.png)
+![img_3.png](readme-imgs/img_3.png)
 
 ### Customers
-![img_2.png](img_2.png)
+![img_2.png](readme-imgs/img_2.png)
 
 ## API Schemas
-![img_4.png](img_4.png)
+![img_4.png](readme-imgs/img_4.png)
 
 
 ---
@@ -131,7 +131,7 @@ cp .env.example .env
 docker compose up --build
 
 ```
-![img_6.png](img_6.png)
+![img_6.png](readme-imgs/img_6.png)
 
 The API will be available at `http://localhost:8080`.
 
@@ -156,7 +156,7 @@ docker run -d --name postgres -p 5432:5432 \
 docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 \
   rabbitmq:management
 ```
-![img_7.png](img_7.png)
+![img_7.png](readme-imgs/img_7.png)
 
 **2. Configure environment variables in IntelliJ:**
 
