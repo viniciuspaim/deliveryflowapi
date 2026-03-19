@@ -4,12 +4,15 @@ import dev.viniciuspaim.deliveryflowapi.dto.OrderRequest;
 import dev.viniciuspaim.deliveryflowapi.exception.CustomerNotFoundException;
 import dev.viniciuspaim.deliveryflowapi.exception.InvalidOrderStatusException;
 import dev.viniciuspaim.deliveryflowapi.exception.OrderNotFoundException;
+import dev.viniciuspaim.deliveryflowapi.exception.RestaurantNotFoundException;
 import dev.viniciuspaim.deliveryflowapi.messaging.OrderEventProducer;
 import dev.viniciuspaim.deliveryflowapi.model.Customer;
 import dev.viniciuspaim.deliveryflowapi.model.Order;
 import dev.viniciuspaim.deliveryflowapi.model.OrderStatusEnum;
+import dev.viniciuspaim.deliveryflowapi.model.Restaurant;
 import dev.viniciuspaim.deliveryflowapi.repository.CustomerRepository;
 import dev.viniciuspaim.deliveryflowapi.repository.OrderRepository;
+import dev.viniciuspaim.deliveryflowapi.repository.RestaurantRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,20 +26,29 @@ public class OrderService {
     OrderEventProducer orderEventProducer;
     final
     CustomerRepository customerRepository;
+    final
+    RestaurantRepository restaurantRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderEventProducer orderEventProducer, CustomerRepository customerRepository) {
+    public OrderService(OrderRepository orderRepository,
+                        OrderEventProducer orderEventProducer,
+                        CustomerRepository customerRepository,
+                        RestaurantRepository restaurantRepository) {
         this.orderRepository = orderRepository;
         this.orderEventProducer = orderEventProducer;
         this.customerRepository = customerRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     public Order createOrder(OrderRequest request) {
         Customer customer = customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new CustomerNotFoundException("Invalid Customer Id: " + request.getCustomerId()));
 
+        Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
+                .orElseThrow(() -> new RestaurantNotFoundException("Invalid Restaurant Id: " + request.getRestaurantId()));
+
         Order order = Order.builder()
                 .customer(customer)
-                .totalAmount(request.getTotalAmount())
+                .restaurant(restaurant)
                 .status(OrderStatusEnum.CREATED)
                 .createdAt(LocalDateTime.now())
                 .build();

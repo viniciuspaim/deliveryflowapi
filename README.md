@@ -20,6 +20,7 @@ The project started as a minimal order processing API and is being progressively
 |---|---|---|
 | Java | 17 | Language |
 | Spring Boot | 4.0.3 | Framework |
+| Spring Doc | 3.0.2 | API Documentation |
 | Spring Data JPA | — | ORM / Database access |
 | Spring AMQP | — | RabbitMQ messaging |
 | Flyway | 11.x | Database migrations |
@@ -28,6 +29,16 @@ The project started as a minimal order processing API and is being progressively
 | Lombok | — | Boilerplate reduction |
 | Docker / Docker Compose | — | Containerization |
 | Gradle | — | Build tool |
+
+> ⚠️ **Note:** Version **3.0.2** of **Spring Doc** is currently the only one compatible with **Spring Boot 4.0.3**.
+>
+> However, it introduces transitive dependencies with known security vulnerabilities:
+> - `com.fasterxml.jackson.core:jackson-core:2.20.2` - https://www.mend.io/vulnerability-database/GHSA-72hv-8253-57qq/
+> - `tools.jackson.core:jackson-core:3.0.4` - https://www.mend.io/vulnerability-database/CVE-2026-29062/
+>
+> These are associated with **GHSA-72hv-8253-57qq** and **CVE-2026-29062 (CVSS 7.5)**, which describes a nesting depth constraint bypass in `UTF8DataInputJsonParser`, potentially leading to resource exhaustion.
+>
+> ⚠️ **<span style="color: #ff4d4f;"><strong> Use with caution in production environments and monitor for patched releases.</strong></span>**
 
 ---
 
@@ -50,7 +61,7 @@ Customer ──< Order >── Restaurant
 ### Order Status Flow
 ```
 CREATED → PENDING → CONFIRMED → PREPARING → READY → DISPATCHED → DELIVERED
-                                                              └──> CANCELLED
+             └──> CANCELLED                                              
 ```
 
 ---
@@ -58,14 +69,15 @@ CREATED → PENDING → CONFIRMED → PREPARING → READY → DISPATCHED → DEL
 ## 🔁 Messaging (RabbitMQ)
 
 When an order is confirmed (`PUT /orders/{id}/confirm`), an event is published to RabbitMQ:
-*I know...Its basic! Someday i'll focus on bring more functionalities and etc.*
+*I know...Its basic! Someday i'll focus on bring more functionalities, like SMS or E-mail notifications through another application that reads the queue of orders Cancelled or Confirmed.*
 - **Exchange:** `exchange1` (TopicExchange)
 - **Queue:** `queue1`
 - **Routing Key:** `order.confirmed`
 - **Consumer:** logs the event and simulates a notification to the customer
 
 ---
-
+## 🖧  Database Diagram
+![img_5.png](img_5.png)
 ## 🗄️ Database Migrations (Flyway)
 
 | Version | Description |
@@ -83,27 +95,21 @@ When an order is confirmed (`PUT /orders/{id}/confirm`), an event is published t
 ## 🌐 API Endpoints
 
 ### Orders
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/orders` | Create order |
-| GET | `/orders` | List all orders |
-| GET | `/orders/{id}` | Get order by ID |
-| PUT | `/orders/{id}/confirm` | Confirm order (triggers event) |
-| PUT | `/orders/{id}/cancel` | Cancel order |
-
-### Customers
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/customers` | Create customer |
-| GET | `/customers` | List all customers |
-| GET | `/customers/{id}` | Get customer by ID |
-| DELETE | `/customers/{id}` | Delete customer |
+![img.png](img.png)
 
 ### Restaurants
-| Method | Endpoint | Description                                                      |
-|---|---|------------------------------------------------------------------|
-| POST | `/restaurants` | Create restaurant                                                |
-| GET | `/restaurants/{id}/orders` | List restaurant orders (paginated, 10 per page "*because i want*") |
+![img_1.png](img_1.png)
+`/restaurants/{id}/orders` | paginated, 10 per page "*because i want*"😂 |
+
+### Products
+![img_3.png](img_3.png)
+
+### Customers
+![img_2.png](img_2.png)
+
+## API Schemas
+![img_4.png](img_4.png)
+
 
 ---
 
@@ -123,7 +129,9 @@ cp .env.example .env
 
 # Start all services
 docker compose up --build
+
 ```
+![img_6.png](img_6.png)
 
 The API will be available at `http://localhost:8080`.
 
@@ -148,6 +156,7 @@ docker run -d --name postgres -p 5432:5432 \
 docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 \
   rabbitmq:management
 ```
+![img_7.png](img_7.png)
 
 **2. Configure environment variables in IntelliJ:**
 
@@ -181,7 +190,7 @@ RABBITMQ_PASSWORD=guest
 
 ## 🔒 Security Note
 
-Credentials are managed via environment variables with my Intellij. The `.env` file is listed in `.gitignore` and is never committed to the repository.
+Credentials are managed via environment variables with my Intellij, keep in mind, these credentials above are examples. The `.env` file is listed in `.gitignore` and is never committed to the repository.
 
 ---
 
