@@ -2,10 +2,13 @@ package dev.viniciuspaim.deliveryflowapi.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class CustomerRequest {
-    Long customerId;
     String fullName;
     String idNumber;
     String email;
+    String phoneNumber;
+    String address;
 }

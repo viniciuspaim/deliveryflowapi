@@ -6,6 +6,7 @@ import dev.viniciuspaim.deliveryflowapi.model.Customer;
 import dev.viniciuspaim.deliveryflowapi.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,7 +21,10 @@ public class CustomerService {
         Customer customer = Customer.builder()
                 .fullName(request.getFullName())
                 .idNumber(request.getIdNumber())
+                .phoneNumber(request.getPhoneNumber())
                 .email(request.getEmail())
+                .address(request.getAddress())
+                .createdAt(LocalDateTime.now())
                 .build();
 
         return customerRepository.save(customer);
