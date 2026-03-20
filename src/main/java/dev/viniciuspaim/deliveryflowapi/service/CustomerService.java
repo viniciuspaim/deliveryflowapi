@@ -18,7 +18,6 @@ public class CustomerService {
 
     public Customer createCustomer(CustomerRequest request) {
         Customer customer = Customer.builder()
-                .customerId(request.getCustomerId())
                 .fullName(request.getFullName())
                 .idNumber(request.getIdNumber())
                 .email(request.getEmail())
