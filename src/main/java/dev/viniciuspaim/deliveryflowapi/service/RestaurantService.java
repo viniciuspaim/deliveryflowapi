@@ -2,14 +2,10 @@ package dev.viniciuspaim.deliveryflowapi.service;
 
 import dev.viniciuspaim.deliveryflowapi.dto.RestaurantRequest;
 import dev.viniciuspaim.deliveryflowapi.exception.RestaurantNotFoundException;
-import dev.viniciuspaim.deliveryflowapi.model.Order;
 import dev.viniciuspaim.deliveryflowapi.model.Restaurant;
 import dev.viniciuspaim.deliveryflowapi.model.RestaurantStatusEnum;
 import dev.viniciuspaim.deliveryflowapi.repository.OrderRepository;
 import dev.viniciuspaim.deliveryflowapi.repository.RestaurantRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
