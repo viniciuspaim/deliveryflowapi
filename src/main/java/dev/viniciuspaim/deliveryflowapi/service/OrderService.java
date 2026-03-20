@@ -1,18 +1,14 @@
 package dev.viniciuspaim.deliveryflowapi.service;
 
 import dev.viniciuspaim.deliveryflowapi.dto.OrderRequest;
-import dev.viniciuspaim.deliveryflowapi.exception.CustomerNotFoundException;
 import dev.viniciuspaim.deliveryflowapi.exception.InvalidOrderStatusException;
 import dev.viniciuspaim.deliveryflowapi.exception.OrderNotFoundException;
-import dev.viniciuspaim.deliveryflowapi.exception.RestaurantNotFoundException;
 import dev.viniciuspaim.deliveryflowapi.messaging.OrderEventProducer;
 import dev.viniciuspaim.deliveryflowapi.model.Customer;
 import dev.viniciuspaim.deliveryflowapi.model.Order;
 import dev.viniciuspaim.deliveryflowapi.model.OrderStatusEnum;
 import dev.viniciuspaim.deliveryflowapi.model.Restaurant;
-import dev.viniciuspaim.deliveryflowapi.repository.CustomerRepository;
 import dev.viniciuspaim.deliveryflowapi.repository.OrderRepository;
-import dev.viniciuspaim.deliveryflowapi.repository.RestaurantRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,26 +21,23 @@ public class OrderService {
     final
     OrderEventProducer orderEventProducer;
     final
-    CustomerRepository customerRepository;
+    CustomerService customerService;
     final
-    RestaurantRepository restaurantRepository;
+    RestaurantService restaurantService;
 
     public OrderService(OrderRepository orderRepository,
                         OrderEventProducer orderEventProducer,
-                        CustomerRepository customerRepository,
-                        RestaurantRepository restaurantRepository) {
+                        CustomerService customerService,
+                        RestaurantService restaurantService) {
         this.orderRepository = orderRepository;
         this.orderEventProducer = orderEventProducer;
-        this.customerRepository = customerRepository;
-        this.restaurantRepository = restaurantRepository;
+        this.customerService = customerService;
+        this.restaurantService = restaurantService;
     }
 
     public Order createOrder(OrderRequest request) {
-        Customer customer = customerRepository.findById(request.getCustomerId())
-                .orElseThrow(() -> new CustomerNotFoundException("Invalid Customer Id: " + request.getCustomerId()));
-
-        Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
-                .orElseThrow(() -> new RestaurantNotFoundException("Invalid Restaurant Id: " + request.getRestaurantId()));
+        Customer customer = customerService.findById(request.getCustomerId());
+        Restaurant restaurant = restaurantService.findById(request.getRestaurantId());
 
         Order order = Order.builder()
                 .customer(customer)
@@ -56,7 +49,7 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public void validateNotCancelled(Order order) {
+    private void validateNotCancelled(Order order) {
         if (order.getStatus() == OrderStatusEnum.CANCELLED) {
             throw new InvalidOrderStatusException("Order " + order.getOrderId() + " is already cancelled");
         }
@@ -76,6 +69,10 @@ public class OrderService {
         validateNotCancelled(order);
         order.setStatus(OrderStatusEnum.CANCELLED);
         return orderRepository.save(order);
+    }
+
+    public List<Order> getOrdersByRestaurant(Long restaurantId){
+        return orderRepository.findAllByRestaurantRestaurantId(restaurantId);
     }
 
     public Order confirmOrder(Long orderId) {
