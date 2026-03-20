@@ -1,6 +1,7 @@
 package dev.viniciuspaim.deliveryflowapi.controller;
 
 import dev.viniciuspaim.deliveryflowapi.dto.RestaurantRequest;
+import dev.viniciuspaim.deliveryflowapi.service.OrderService;
 import dev.viniciuspaim.deliveryflowapi.service.RestaurantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class RestaurantController {
     final RestaurantService restaurantService;
-    public RestaurantController(RestaurantService restaurantService) {
+    private final OrderService orderService;
+
+    public RestaurantController(RestaurantService restaurantService, OrderService orderService) {
      this.restaurantService = restaurantService;
+        this.orderService = orderService;
     }
 
     @PostMapping
@@ -22,8 +26,7 @@ public class RestaurantController {
 
     @GetMapping("/{restaurantId}/orders")
     public ResponseEntity<?> getOrdersByRestaurant(
-            @PathVariable Long restaurantId,
-            @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(restaurantService.getOrdersByRestaurant(restaurantId, page));
+            @PathVariable Long restaurantId) {
+        return ResponseEntity.ok(orderService.getOrdersByRestaurant(restaurantId));
     }
 }
