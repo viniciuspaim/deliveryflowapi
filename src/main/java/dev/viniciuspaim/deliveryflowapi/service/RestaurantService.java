@@ -1,6 +1,7 @@
 package dev.viniciuspaim.deliveryflowapi.service;
 
 import dev.viniciuspaim.deliveryflowapi.dto.RestaurantRequest;
+import dev.viniciuspaim.deliveryflowapi.exception.RestaurantNotFoundException;
 import dev.viniciuspaim.deliveryflowapi.model.Order;
 import dev.viniciuspaim.deliveryflowapi.model.Restaurant;
 import dev.viniciuspaim.deliveryflowapi.model.RestaurantStatusEnum;
@@ -25,11 +26,6 @@ public class RestaurantService {
         this.orderRepository = orderRepository;
     }
 
-    public Page<Order> getOrdersByRestaurant(Long restaurantId, int page){
-        Pageable pageable = PageRequest.of(page, 10);
-        return orderRepository.findAllByRestaurantRestaurantId(restaurantId, pageable);
-    }
-
     public Restaurant createRestaurant(RestaurantRequest request){
         Restaurant restaurant = Restaurant.builder()
                 .fullName(request.getFullName())
@@ -42,6 +38,11 @@ public class RestaurantService {
                 .build();
 
         return restaurantRepository.save(restaurant);
+    }
+
+    public Restaurant findById(Long restaurantId) {
+        return restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RestaurantNotFoundException("Invalid Restaurant Id: " + restaurantId));
     }
 //    Not implemented yet!!!
 //    public Restaurant checkStatus(Long restaurantId){
