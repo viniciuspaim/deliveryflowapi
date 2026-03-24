@@ -1,6 +1,6 @@
 package dev.viniciuspaim.deliveryflowapi.controller;
 
-import dev.viniciuspaim.deliveryflowapi.dto.RestaurantRequest;
+import dev.viniciuspaim.deliveryflowapi.dto.request.RestaurantRequest;
 import dev.viniciuspaim.deliveryflowapi.service.OrderService;
 import dev.viniciuspaim.deliveryflowapi.service.RestaurantService;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package dev.viniciuspaim.deliveryflowapi.service;
 
-import dev.viniciuspaim.deliveryflowapi.dto.RestaurantRequest;
+import dev.viniciuspaim.deliveryflowapi.dto.request.RestaurantRequest;
 import dev.viniciuspaim.deliveryflowapi.exception.RestaurantNotFoundException;
 import dev.viniciuspaim.deliveryflowapi.model.Restaurant;
 import dev.viniciuspaim.deliveryflowapi.model.RestaurantStatusEnum;
