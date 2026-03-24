@@ -22,9 +22,14 @@ public class Order {
     @JoinColumn(name = "customerId")
     Customer customer;
 
-    OrderStatusEnum status;
-    BigDecimal totalAmount;
-    LocalDateTime createdAt;
+    @Column(name = "status")
+    OrderStatusEnum orderStatus;
+
+    @Column(name = "total_amount")
+    BigDecimal orderAmount;
+
+    @Column(name = "created_at")
+    LocalDateTime orderDate;
 
     @ManyToOne
     @JoinColumn(name = "restaurantId")

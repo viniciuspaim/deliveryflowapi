@@ -1,6 +1,6 @@
 package dev.viniciuspaim.deliveryflowapi.controller;
 
-import dev.viniciuspaim.deliveryflowapi.dto.OrderRequest;
+import dev.viniciuspaim.deliveryflowapi.dto.request.OrderRequest;
 import dev.viniciuspaim.deliveryflowapi.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class OrderController {
 
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrder(@PathVariable Long orderId) {
-        return ResponseEntity.ok(orderService.getOrderById(orderId));
+        return ResponseEntity.ok(orderService.getOrderResponseById(orderId));
     }
 
     @GetMapping()
