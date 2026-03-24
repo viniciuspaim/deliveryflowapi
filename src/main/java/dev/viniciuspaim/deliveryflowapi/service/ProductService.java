@@ -1,6 +1,6 @@
 package dev.viniciuspaim.deliveryflowapi.service;
 
-import dev.viniciuspaim.deliveryflowapi.dto.ProductRequest;
+import dev.viniciuspaim.deliveryflowapi.dto.request.ProductRequest;
 import dev.viniciuspaim.deliveryflowapi.exception.*;
 import dev.viniciuspaim.deliveryflowapi.model.*;
 import dev.viniciuspaim.deliveryflowapi.repository.ProductCategoryRepository;

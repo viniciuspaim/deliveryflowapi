@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.dto;
+package dev.viniciuspaim.deliveryflowapi.dto.request;
 
 import lombok.Data;
 

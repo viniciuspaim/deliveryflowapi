@@ -1,6 +1,6 @@
 package dev.viniciuspaim.deliveryflowapi.controller;
 
-import dev.viniciuspaim.deliveryflowapi.dto.ProductRequest;
+import dev.viniciuspaim.deliveryflowapi.dto.request.ProductRequest;
 import dev.viniciuspaim.deliveryflowapi.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
