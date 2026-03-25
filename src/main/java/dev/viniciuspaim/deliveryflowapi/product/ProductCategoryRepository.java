@@ -1,6 +1,5 @@
-package dev.viniciuspaim.deliveryflowapi.repository;
+package dev.viniciuspaim.deliveryflowapi.product;
 
-import dev.viniciuspaim.deliveryflowapi.model.ProductCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory,Long> {

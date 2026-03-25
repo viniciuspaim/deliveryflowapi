@@ -1,6 +1,5 @@
-package dev.viniciuspaim.deliveryflowapi.repository;
+package dev.viniciuspaim.deliveryflowapi.product;
 
-import dev.viniciuspaim.deliveryflowapi.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<Product,Long> {

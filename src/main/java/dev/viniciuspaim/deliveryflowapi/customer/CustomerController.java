@@ -1,7 +1,6 @@
-package dev.viniciuspaim.deliveryflowapi.controller;
+package dev.viniciuspaim.deliveryflowapi.customer;
 
 import dev.viniciuspaim.deliveryflowapi.dto.request.CustomerRequest;
-import dev.viniciuspaim.deliveryflowapi.service.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

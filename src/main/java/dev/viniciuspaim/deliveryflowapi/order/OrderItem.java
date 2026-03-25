@@ -1,5 +1,6 @@
-package dev.viniciuspaim.deliveryflowapi.model;
+package dev.viniciuspaim.deliveryflowapi.order;
 
+import dev.viniciuspaim.deliveryflowapi.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,6 +1,5 @@
-package dev.viniciuspaim.deliveryflowapi.repository;
+package dev.viniciuspaim.deliveryflowapi.order;
 
-import dev.viniciuspaim.deliveryflowapi.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

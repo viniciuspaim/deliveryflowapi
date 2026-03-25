@@ -1,9 +1,7 @@
-package dev.viniciuspaim.deliveryflowapi.service;
+package dev.viniciuspaim.deliveryflowapi.customer;
 
 import dev.viniciuspaim.deliveryflowapi.dto.request.CustomerRequest;
 import dev.viniciuspaim.deliveryflowapi.exception.CustomerNotFoundException;
-import dev.viniciuspaim.deliveryflowapi.model.Customer;
-import dev.viniciuspaim.deliveryflowapi.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

@@ -1,11 +1,10 @@
-package dev.viniciuspaim.deliveryflowapi.service;
+package dev.viniciuspaim.deliveryflowapi.restaurant;
 
 import dev.viniciuspaim.deliveryflowapi.dto.request.RestaurantRequest;
 import dev.viniciuspaim.deliveryflowapi.exception.RestaurantNotFoundException;
-import dev.viniciuspaim.deliveryflowapi.model.Restaurant;
-import dev.viniciuspaim.deliveryflowapi.model.RestaurantStatusEnum;
-import dev.viniciuspaim.deliveryflowapi.repository.OrderRepository;
-import dev.viniciuspaim.deliveryflowapi.repository.RestaurantRepository;
+import dev.viniciuspaim.deliveryflowapi.enums.RestaurantStatusEnum;
+// TODO: replace direct OrderRepository dependency with OrderService to isolate domain boundaries
+import dev.viniciuspaim.deliveryflowapi.order.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

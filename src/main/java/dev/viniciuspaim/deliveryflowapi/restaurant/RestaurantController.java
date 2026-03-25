@@ -1,8 +1,7 @@
-package dev.viniciuspaim.deliveryflowapi.controller;
+package dev.viniciuspaim.deliveryflowapi.restaurant;
 
 import dev.viniciuspaim.deliveryflowapi.dto.request.RestaurantRequest;
-import dev.viniciuspaim.deliveryflowapi.service.OrderService;
-import dev.viniciuspaim.deliveryflowapi.service.RestaurantService;
+import dev.viniciuspaim.deliveryflowapi.order.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

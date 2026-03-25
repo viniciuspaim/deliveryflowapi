@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.model;
+package dev.viniciuspaim.deliveryflowapi.product;
 
 import jakarta.persistence.*;
 import lombok.*;
