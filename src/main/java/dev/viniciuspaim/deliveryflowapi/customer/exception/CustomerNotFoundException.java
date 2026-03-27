@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.exception;
+package dev.viniciuspaim.deliveryflowapi.customer.exception;
 
 public class CustomerNotFoundException extends RuntimeException {
     public CustomerNotFoundException(String message) {
