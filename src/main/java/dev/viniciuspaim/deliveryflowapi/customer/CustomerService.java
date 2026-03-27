@@ -1,5 +1,6 @@
 package dev.viniciuspaim.deliveryflowapi.customer;
 
+import dev.viniciuspaim.deliveryflowapi.customer.dto.CustomerRequest;
 import dev.viniciuspaim.deliveryflowapi.customer.exception.CustomerNotFoundException;
 import org.springframework.stereotype.Service;
 
