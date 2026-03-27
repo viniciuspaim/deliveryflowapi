@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.exception;
+package dev.viniciuspaim.deliveryflowapi.order.exception;
 
 public class InvalidOrderStatusException extends RuntimeException {
     public InvalidOrderStatusException(String message) {
