@@ -1,5 +1,11 @@
 package dev.viniciuspaim.deliveryflowapi.exception;
 
+import dev.viniciuspaim.deliveryflowapi.customer.exception.CustomerNotFoundException;
+import dev.viniciuspaim.deliveryflowapi.order.exception.InvalidOrderStatusException;
+import dev.viniciuspaim.deliveryflowapi.order.exception.OrderNotFoundException;
+import dev.viniciuspaim.deliveryflowapi.product.exception.ProductCategoryNotFoundException;
+import dev.viniciuspaim.deliveryflowapi.product.exception.ProductNotFoundException;
+import dev.viniciuspaim.deliveryflowapi.restaurant.exception.RestaurantNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
