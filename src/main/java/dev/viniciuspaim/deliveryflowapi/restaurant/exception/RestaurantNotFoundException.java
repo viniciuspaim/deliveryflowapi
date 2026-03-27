@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.exception;
+package dev.viniciuspaim.deliveryflowapi.restaurant.exception;
 
 public class RestaurantNotFoundException extends RuntimeException {
     public RestaurantNotFoundException(String message) {

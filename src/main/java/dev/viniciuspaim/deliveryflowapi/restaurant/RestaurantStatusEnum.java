@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.enums;
+package dev.viniciuspaim.deliveryflowapi.restaurant;
 
 public enum RestaurantStatusEnum {
     OPENED,
