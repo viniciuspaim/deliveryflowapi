@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.enums;
+package dev.viniciuspaim.deliveryflowapi.order;
 
 public enum OrderStatusEnum {
     CREATED,

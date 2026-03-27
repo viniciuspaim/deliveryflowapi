@@ -1,12 +1,11 @@
 package dev.viniciuspaim.deliveryflowapi.order;
 
-import dev.viniciuspaim.deliveryflowapi.dto.request.OrderRequest;
-import dev.viniciuspaim.deliveryflowapi.dto.response.OrderResponse;
-import dev.viniciuspaim.deliveryflowapi.exception.InvalidOrderStatusException;
-import dev.viniciuspaim.deliveryflowapi.exception.OrderNotFoundException;
-import dev.viniciuspaim.deliveryflowapi.messaging.OrderEventProducer;
+import dev.viniciuspaim.deliveryflowapi.order.exception.InvalidOrderStatusException;
+import dev.viniciuspaim.deliveryflowapi.order.exception.OrderNotFoundException;
+import dev.viniciuspaim.deliveryflowapi.order.messaging.OrderEventProducer;
 import dev.viniciuspaim.deliveryflowapi.customer.Customer;
-import dev.viniciuspaim.deliveryflowapi.enums.OrderStatusEnum;
+import dev.viniciuspaim.deliveryflowapi.order.dto.OrderRequest;
+import dev.viniciuspaim.deliveryflowapi.order.dto.OrderResponse;
 import dev.viniciuspaim.deliveryflowapi.restaurant.Restaurant;
 import dev.viniciuspaim.deliveryflowapi.customer.CustomerService;
 import dev.viniciuspaim.deliveryflowapi.restaurant.RestaurantService;

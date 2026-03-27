@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.messaging;
+package dev.viniciuspaim.deliveryflowapi.order.messaging;
 
 import dev.viniciuspaim.deliveryflowapi.config.RabbitMQConfig;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.exception;
+package dev.viniciuspaim.deliveryflowapi.order.exception;
 
 public class OrderNotFoundException extends RuntimeException {
     public OrderNotFoundException(String message) {
