@@ -1,6 +1,5 @@
 package dev.viniciuspaim.deliveryflowapi.product;
 
-import dev.viniciuspaim.deliveryflowapi.enums.ProductStatusEnum;
 import dev.viniciuspaim.deliveryflowapi.restaurant.Restaurant;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.exception;
+package dev.viniciuspaim.deliveryflowapi.product.exception;
 
 public class ProductCategoryNotFoundException extends RuntimeException {
     public ProductCategoryNotFoundException(String message) {

@@ -1,4 +1,4 @@
-package dev.viniciuspaim.deliveryflowapi.exception;
+package dev.viniciuspaim.deliveryflowapi.product.exception;
 
 public class ProductNotFoundException extends RuntimeException {
     public ProductNotFoundException(String message) {

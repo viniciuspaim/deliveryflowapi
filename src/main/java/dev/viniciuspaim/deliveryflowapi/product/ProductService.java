@@ -1,10 +1,11 @@
 package dev.viniciuspaim.deliveryflowapi.product;
 
-import dev.viniciuspaim.deliveryflowapi.dto.request.ProductRequest;
-import dev.viniciuspaim.deliveryflowapi.exception.*;
-import dev.viniciuspaim.deliveryflowapi.enums.*;
+import dev.viniciuspaim.deliveryflowapi.product.dto.ProductRequest;
+import dev.viniciuspaim.deliveryflowapi.product.exception.ProductCategoryNotFoundException;
+import dev.viniciuspaim.deliveryflowapi.product.exception.ProductNotFoundException;
 import dev.viniciuspaim.deliveryflowapi.restaurant.Restaurant;
 import dev.viniciuspaim.deliveryflowapi.restaurant.RestaurantRepository;
+import dev.viniciuspaim.deliveryflowapi.restaurant.exception.RestaurantNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
