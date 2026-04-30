@@ -110,7 +110,9 @@ jobs:
       - name: Terraform Apply
         working-directory: ./terraform
         run: |
-          terraform apply -auto-approve tfplan
+          terraform apply \
+            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
+            -auto-approve
 
       - name: Deploy to App Service
         run: |
