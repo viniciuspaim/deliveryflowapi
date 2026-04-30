@@ -1,0 +1,121 @@
+name: CI/CD Multi-Env
+
+on:
+  push:
+    branches:
+      - develop
+      - test
+      - hml
+      - master
+
+env:
+  REGISTRY: ${{ secrets.ACR_LOGIN_SERVER }}
+  IMAGE_NAME: deliveryflowapi
+
+jobs:
+  determine-env:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set-env.outputs.environment }}
+      deploy: ${{ steps.set-env.outputs.deploy }}
+    steps:
+      - id: set-env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/develop" ]; then
+            echo "environment=dev" >> $GITHUB_OUTPUT
+            echo "deploy=true" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" = "refs/heads/test" ]; then
+            echo "environment=test" >> $GITHUB_OUTPUT
+            echo "deploy=true" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" = "refs/heads/hml" ]; then
+            echo "environment=hml" >> $GITHUB_OUTPUT
+            echo "deploy=true" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            echo "environment=prod" >> $GITHUB_OUTPUT
+            echo "deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "deploy=false" >> $GITHUB_OUTPUT
+          fi
+
+  build-test:
+    runs-on: ubuntu-latest
+    needs: determine-env
+    if: needs.determine-env.outputs.deploy == 'true'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Build JAR
+        run: ./gradlew build -x test
+
+      - name: Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build & push Docker image
+        run: |
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [determine-env, build-test]
+    if: needs.determine-env.outputs.deploy == 'true'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: ./terraform
+        run: |
+          terraform plan \
+            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
+            -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: |
+          terraform apply -auto-approve tfplan
+
+      - name: Deploy to App Service
+        run: |
+          az webapp config container set \
+            --name deliveryflow-${{ needs.determine-env.outputs.environment }} \
+            --resource-group deliveryflow-${{ needs.determine-env.outputs.environment }}-rg \
+            --docker-custom-image-name ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --docker-registry-server-url https://${{ env.REGISTRY }} \
+            --docker-registry-server-user ${{ secrets.ACR_USERNAME }} \
+            --docker-registry-server-password ${{ secrets.ACR_PASSWORD }}
+
+      - name: Restart App Service
+        run: |
+          az webapp restart \
+            --name deliveryflow-${{ needs.determine-env.outputs.environment }} \
+            --resource-group deliveryflow-${{ needs.determine-env.outputs.environment }}-rg
