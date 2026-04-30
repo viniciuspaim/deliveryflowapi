@@ -12,7 +12,7 @@ resource "azurerm_container_group" "prometheus" {
     cpu    = "0.5"
     memory = "1.0"
 
-    port {
+    ports {
       port     = 9090
       protocol = "TCP"
     }
@@ -59,7 +59,7 @@ resource "azurerm_container_group" "grafana" {
     cpu    = "0.5"
     memory = "1.0"
 
-    port {
+    ports {
       port     = 3000
       protocol = "TCP"
     }

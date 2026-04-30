@@ -1,2 +1,2 @@
 environment = "prod"
-location    = "East US"
+location    = "chilecentral"

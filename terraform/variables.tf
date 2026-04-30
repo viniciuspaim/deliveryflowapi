@@ -12,7 +12,7 @@ variable "location" {
 variable "repo_url" {
   description = "Repository URL for git provisioning"
   type        = string
-  default     = "https://github.com/seu-usuario/deliveryflowapi.git"
+  default     = "https://github.com/viniciuspaim/deliveryflowapi.git"
 }
 
 variable "app_service_sku" {
