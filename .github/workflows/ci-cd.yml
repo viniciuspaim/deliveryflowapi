@@ -109,15 +109,23 @@ jobs:
           terraform import \
             -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
             azurerm_container_registry.acr \
-            /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.ContainerRegistry/registries/deliveryflowprodacr || true
+            /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.ContainerRegistry/registries/deliveryflow${{ needs.determine-env.outputs.environment }}acr || true
           terraform import \
             -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
             azurerm_app_service_plan.plan \
             /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.Web/serverFarms/deliveryflow-${{ needs.determine-env.outputs.environment }}-plan || true
           terraform import \
             -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
+            azurerm_app_service.app \
+            /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.Web/sites/deliveryflow-${{ needs.determine-env.outputs.environment }} || true
+          terraform import \
+            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
             azurerm_postgresql_flexible_server.db \
             /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/deliveryflow-${{ needs.determine-env.outputs.environment }}-db || true
+          terraform import \
+            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
+            azurerm_postgresql_flexible_server_firewall_rule.allow_azure \
+            /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/deliveryflow-${{ needs.determine-env.outputs.environment }}-db/firewallRules/AllowAzureServices || true
           terraform import \
             -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
             azurerm_container_group.prometheus \
