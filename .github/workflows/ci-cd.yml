@@ -1,4 +1,4 @@
-name: CI/CD Multi-Env
+name: CI/CD Multi-Environment
 
 on:
   push:
