@@ -61,8 +61,8 @@ jobs:
         uses: azure/docker-login@v1
         with:
           login-server: ${{ env.REGISTRY }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+          username: ${{ secrets.ACR_ADMIN_USERNAME }}
+          password: ${{ secrets.ACR_ADMIN_PASSWORD }}
 
       - name: Build & push Docker image
         run: |
@@ -119,8 +119,8 @@ jobs:
             --resource-group deliveryflow-${{ needs.determine-env.outputs.environment }}-rg \
             --docker-custom-image-name ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
             --docker-registry-server-url https://${{ env.REGISTRY }} \
-            --docker-registry-server-user ${{ secrets.ACR_USERNAME }} \
-            --docker-registry-server-password ${{ secrets.ACR_PASSWORD }}
+            --docker-registry-server-user ${{ secrets.ACR_ADMIN_USERNAME }} \
+            --docker-registry-server-password ${{ secrets.ACR_ADMIN_PASSWORD }}
 
       - name: Restart App Service
         run: |
