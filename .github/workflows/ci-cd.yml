@@ -99,13 +99,33 @@ jobs:
             -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
             -out=tfplan
 
-      - name: Import Resource Group
+      - name: Import Existing Resources
         working-directory: ./terraform
         run: |
           terraform import \
             -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
             azurerm_resource_group.rg \
             /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg || true
+          terraform import \
+            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
+            azurerm_container_registry.acr \
+            /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.ContainerRegistry/registries/deliveryflowprodacr || true
+          terraform import \
+            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
+            azurerm_app_service_plan.plan \
+            /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.Web/serverFarms/deliveryflow-${{ needs.determine-env.outputs.environment }}-plan || true
+          terraform import \
+            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
+            azurerm_postgresql_flexible_server.db \
+            /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/deliveryflow-${{ needs.determine-env.outputs.environment }}-db || true
+          terraform import \
+            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
+            azurerm_container_group.prometheus \
+            /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.ContainerInstance/containerGroups/${{ needs.determine-env.outputs.environment }}-prometheus || true
+          terraform import \
+            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
+            azurerm_container_group.grafana \
+            /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.ContainerInstance/containerGroups/${{ needs.determine-env.outputs.environment }}-grafana || true
 
       - name: Terraform Apply
         working-directory: ./terraform
