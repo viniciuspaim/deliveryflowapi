@@ -105,6 +105,7 @@ resource "azurerm_postgresql_flexible_server" "db" {
 
   sku_name = "B_Standard_B1ms"
   version  = "16"
+  zone     = "2"
 
   storage_mb = 32768
   backup_retention_days = 7
