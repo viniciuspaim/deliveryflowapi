@@ -45,6 +45,11 @@ resource "azurerm_container_registry" "acr" {
   }
 }
 
+data "azurerm_container_registry_credential" "acr_cred" {
+  name                = azurerm_container_registry.acr.name
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
 resource "azurerm_app_service_plan" "plan" {
   name                = "${local.app_name}-plan"
   location            = azurerm_resource_group.rg.location
@@ -75,8 +80,8 @@ resource "azurerm_app_service" "app" {
 
   app_settings = {
     DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.acr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry_credential.acr_cred.username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry_credential.acr_cred.passwords[0].value
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
 
     SPRING_DATASOURCE_URL       = "jdbc:postgresql://${azurerm_postgresql_flexible_server.db.fqdn}:5432/deliveryflowapi"
@@ -136,12 +141,12 @@ output "acr_login_server" {
 
 output "acr_admin_username" {
   description = "ACR admin username"
-  value       = azurerm_container_registry.acr.admin_username
+  value       = data.azurerm_container_registry_credential.acr_cred.username
 }
 
 output "acr_admin_password" {
   description = "ACR admin password"
-  value       = azurerm_container_registry.acr.admin_password
+  value       = data.azurerm_container_registry_credential.acr_cred.passwords[0].value
   sensitive   = true
 }
 
