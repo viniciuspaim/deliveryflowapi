@@ -61,7 +61,7 @@ resource "azurerm_app_service" "app" {
   name                = local.app_name
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  service_plan_id     = azurerm_service_plan.plan.id
+  app_service_plan_id = azurerm_service_plan.plan.id
 
   site_config {
     linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/deliveryflowapi:latest"
@@ -70,8 +70,8 @@ resource "azurerm_app_service" "app" {
 
   app_settings = {
     DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.acr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = local.acr_creds.username
-    DOCKER_REGISTRY_SERVER_PASSWORD = local.acr_creds.password
+    DOCKER_REGISTRY_SERVER_USERNAME = data.external.acr_credentials.result.username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.external.acr_credentials.result.password
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
 
     SPRING_DATASOURCE_URL       = "jdbc:postgresql://${azurerm_postgresql_flexible_server.db.fqdn}:5432/deliveryflowapi"
@@ -124,10 +124,6 @@ resource "random_password" "db_password" {
   special = true
 }
 
-locals {
-  acr_creds = jsondecode(data.external.acr_credentials.result["credentials"])
-}
-
 data "external" "acr_credentials" {
   program = ["az", "acr", "credential", "show", "--name", azurerm_container_registry.acr.name, "--resource-group", azurerm_resource_group.rg.name, "--query", "{username: username, password: passwords[0].value}" ]
 }
@@ -139,12 +135,12 @@ output "acr_login_server" {
 
 output "acr_admin_username" {
   description = "ACR admin username"
-  value       = local.acr_creds.username
+  value       = data.external.acr_credentials.result.username
 }
 
 output "acr_admin_password" {
   description = "ACR admin password"
-  value       = local.acr_creds.password
+  value       = data.external.acr_credentials.result.password
   sensitive   = true
 }
 
