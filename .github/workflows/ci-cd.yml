@@ -92,13 +92,6 @@ jobs:
         working-directory: ./terraform
         run: terraform init
 
-      - name: Terraform Plan
-        working-directory: ./terraform
-        run: |
-          terraform plan \
-            -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
-            -out=tfplan
-
       - name: Import Existing Resources
         working-directory: ./terraform
         run: |
@@ -134,6 +127,10 @@ jobs:
             -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
             azurerm_container_group.grafana \
             /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.ContainerInstance/containerGroups/${{ needs.determine-env.outputs.environment }}-grafana || true
+
+      - name: Terraform Plan
+        working-directory: ./terraform
+        run: terraform plan -var-file="${{ needs.determine-env.outputs.environment }}.tfvars"
 
       - name: Terraform Apply
         working-directory: ./terraform
