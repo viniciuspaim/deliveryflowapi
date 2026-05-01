@@ -22,7 +22,7 @@ resource "azurerm_container_group" "prometheus" {
       mount_path = "/etc/prometheus"
       git_repo {
         url       = var.repo_url
-        directory = "prometheus"
+        directory = "."
       }
     }
 
@@ -34,7 +34,7 @@ resource "azurerm_container_group" "prometheus" {
 
     commands = [
       "prometheus",
-      "--config.file=/etc/prometheus/prometheus.yml",
+      "--config.file=/etc/prometheus/prometheus/prometheus.yml",
       "--storage.tsdb.path=/prometheus"
     ]
   }
