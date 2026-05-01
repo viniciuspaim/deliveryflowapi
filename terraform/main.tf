@@ -78,7 +78,13 @@ resource "azurerm_app_service" "app" {
     SPRING_DATASOURCE_USERNAME  = azurerm_postgresql_flexible_server.db.administrator_login
     SPRING_DATASOURCE_PASSWORD  = azurerm_postgresql_flexible_server.db.administrator_password
     SPRING_JPA_HIBERNATE_DDL_AUTO = "none"
-    ENVIRONMENT                 = local.env
+
+    SPRING_RABBITMQ_HOST     = azurerm_container_group.rabbitmq.fqdn
+    SPRING_RABBITMQ_PORT     = "5672"
+    SPRING_RABBITMQ_USERNAME = "admin"
+    SPRING_RABBITMQ_PASSWORD = random_password.rabbitmq.result
+
+    ENVIRONMENT = local.env
   }
 
   tags = {

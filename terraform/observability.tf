@@ -106,6 +106,47 @@ resource "random_password" "grafana" {
   special = true
 }
 
+resource "random_password" "rabbitmq" {
+  length  = 16
+  special = true
+}
+
+resource "azurerm_container_group" "rabbitmq" {
+  name                = "${local.env}-rabbitmq"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  os_type             = "Linux"
+  ip_address_type     = "Public"
+  dns_name_label      = "deliveryflow-${local.env}-rabbitmq"
+
+  container {
+    name   = "rabbitmq"
+    image  = "rabbitmq:3-management"
+    cpu    = "1"
+    memory = "1.5"
+
+    ports {
+      port     = 5672
+      protocol = "TCP"
+    }
+
+    ports {
+      port     = 15672
+      protocol = "TCP"
+    }
+
+    environment_variables = {
+      RABBITMQ_DEFAULT_USER = "admin"
+      RABBITMQ_DEFAULT_PASS = random_password.rabbitmq.result
+    }
+  }
+
+  tags = {
+    Environment = local.env
+    Component   = "messaging"
+  }
+}
+
 output "prometheus_url" {
   description = "Prometheus URL"
   value       = "http://${azurerm_container_group.prometheus.fqdn}:9090"
@@ -125,4 +166,26 @@ output "grafana_admin_password" {
   description = "Grafana admin password"
   value       = random_password.grafana.result
   sensitive   = true
+}
+
+output "rabbitmq_url" {
+  description = "RabbitMQ AMQP URL"
+  value       = "amqp://admin:${random_password.rabbitmq.result}@${azurerm_container_group.rabbitmq.fqdn}:5672"
+  sensitive   = true
+}
+
+output "rabbitmq_admin_user" {
+  description = "RabbitMQ admin username"
+  value       = "admin"
+}
+
+output "rabbitmq_admin_password" {
+  description = "RabbitMQ admin password"
+  value       = random_password.rabbitmq.result
+  sensitive   = true
+}
+
+output "rabbitmq_management_url" {
+  description = "RabbitMQ Management UI URL"
+  value       = "http://${azurerm_container_group.rabbitmq.fqdn}:15672"
 }
