@@ -45,17 +45,12 @@ resource "azurerm_container_registry" "acr" {
   }
 }
 
-resource "azurerm_app_service_plan" "plan" {
+resource "azurerm_service_plan" "plan" {
   name                = "${local.app_name}-plan"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  kind                = "Linux"
-  reserved            = true
-
-  sku {
-    tier = "B"
-    size = "B1"
-  }
+  os_type             = "Linux"
+  sku_name            = "B1"
 
   tags = {
     Environment = local.env
@@ -66,7 +61,7 @@ resource "azurerm_app_service" "app" {
   name                = local.app_name
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_app_service_plan.plan.id
+  service_plan_id     = azurerm_service_plan.plan.id
 
   site_config {
     linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/deliveryflowapi:latest"

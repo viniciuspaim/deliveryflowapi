@@ -112,7 +112,7 @@ jobs:
             /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.ContainerRegistry/registries/deliveryflow${{ needs.determine-env.outputs.environment }}acr || true
           terraform import \
             -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
-            azurerm_app_service_plan.plan \
+            azurerm_service_plan.plan \
             /subscriptions/d277f9a5-35a1-424f-8599-4742160d99df/resourceGroups/deliveryflow-${{ needs.determine-env.outputs.environment }}-rg/providers/Microsoft.Web/serverFarms/deliveryflow-${{ needs.determine-env.outputs.environment }}-plan || true
           terraform import \
             -var-file="${{ needs.determine-env.outputs.environment }}.tfvars" \
